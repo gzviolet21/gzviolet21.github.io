@@ -3,235 +3,300 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muhammad Azmi Ghozi Ramadhan — Automation & Data Tools</title>
-<meta name="description" content="Python automation and operations analytics. Building data tools for planning, forecasting, and process improvement. Jakarta, Indonesia.">
+<title>Muhammad Azmi Ghozi Ramadhan — Software for operations</title>
+<meta name="description" content="I build software for the messy middle of operations — planning, assessment, and document-control systems that save hours, cut errors, and explain their own decisions. Jakarta, Indonesia.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Muhammad Azmi Ghozi Ramadhan — Software for operations">
+<meta property="og:description" content="Automation, internal tools, and operations analytics. Two live demos you can try.">
+<meta property="og:type" content="website">
 <style>
-  :root {
-    --bg: #fafaf9;
-    --surface: #ffffff;
-    --text: #1c1917;
-    --text-2: #57534e;
-    --text-3: #a8a29e;
-    --border: #e7e5e4;
-    --accent: #2e3192;
-    --accent-soft: #eef0ff;
-    color-scheme: light dark;
+  :root{
+    --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
+    --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
+    --surface:#F4F5F7; --frame:#DCE0E6;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",ui-serif,serif;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0c0a09;
-      --surface: #1c1917;
-      --text: #fafaf9;
-      --text-2: #d6d3d1;
-      --text-3: #78716c;
-      --border: #292524;
-      --accent: #8f94ff;
-      --accent-soft: #1e2046;
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0F1216; --ink:#EDEFF2; --ink-2:#A9B0BC; --ink-3:#6D7482;
+      --line:#262B33; --accent:#8CA0E8; --accent-soft:rgba(140,160,232,.12);
+      --surface:#161A20; --frame:#20252D;
     }
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+  :root[data-theme="light"]{
+    --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
+    --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
+    --surface:#F4F5F7; --frame:#DCE0E6;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-
-  header { padding: 72px 0 40px; }
-  .eyebrow { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-  h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-top: 10px; letter-spacing: -0.02em; }
-  .tagline { margin-top: 14px; font-size: 17px; color: var(--text-2); max-width: 560px; }
-  .links { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; }
-  .links a {
-    display: inline-block; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600;
-    text-decoration: none; border: 1px solid var(--border); color: var(--text-2); transition: all .15s;
+  :root[data-theme="dark"]{
+    --paper:#0F1216; --ink:#EDEFF2; --ink-2:#A9B0BC; --ink-3:#6D7482;
+    --line:#262B33; --accent:#8CA0E8; --accent-soft:rgba(140,160,232,.12);
+    --surface:#161A20; --frame:#20252D;
   }
-  .links a:hover { border-color: var(--accent); color: var(--accent); }
-  .links a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .links a.primary:hover { opacity: .9; }
 
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 8px 0 0; }
-  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; }
-  .stat b { display: block; font-size: 26px; letter-spacing: -0.02em; color: var(--accent); }
-  .stat span { font-size: 13px; color: var(--text-2); line-height: 1.4; display: block; margin-top: 4px; }
-  @media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--sans); line-height:1.6;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:1120px; margin:0 auto; padding:0 clamp(20px,5vw,56px)}
 
-  section { padding: 40px 0; border-top: 1px solid var(--border); }
-  h2 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); font-weight: 600; margin-bottom: 24px; }
+  .kicker{font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:500}
+  .label{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3)}
+  .lede{font-size:clamp(16px,2vw,18px); color:var(--ink-2); max-width:60ch}
 
-  .project { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
-  .project + .project { margin-top: 16px; }
-  .project h3 { font-size: 18px; letter-spacing: -0.01em; }
-  .project .meta { margin-top: 4px; font-size: 13px; color: var(--text-3); }
-  .project p { margin-top: 12px; font-size: 15px; color: var(--text-2); }
-  .project ul { margin: 12px 0 0 18px; font-size: 14px; color: var(--text-2); }
-  .project ul li + li { margin-top: 5px; }
-  .tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
-  .plink { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; }
-  .plink:hover { text-decoration: underline; }
-  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-3); vertical-align: 2px; margin-left: 8px; }
+  .rule{position:relative; height:1px; background:var(--line); margin:0}
+  .rule::before,.rule::after{content:""; position:absolute; top:-4px; width:1px; height:9px; background:var(--line)}
+  .rule::before{left:0} .rule::after{right:0}
 
-  .skills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .skills span { font-size: 13.5px; padding: 7px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text-2); }
+  header.masthead{padding:clamp(64px,10vw,120px) 0 40px}
+  .spec{display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center}
+  .spec .dot{width:5px; height:5px; background:var(--accent); border-radius:50%; display:inline-block}
+  h1{
+    font-family:var(--serif); font-weight:600;
+    font-size:clamp(36px,7vw,68px); line-height:1.02; letter-spacing:-.015em;
+    text-wrap:balance; margin:26px 0 0; max-width:16ch;
+  }
+  h1 em{font-style:italic; color:var(--accent)}
+  .sub{margin-top:22px; max-width:56ch}
+  .links{margin-top:30px; display:flex; flex-wrap:wrap; gap:10px}
+  .links a{
+    font-family:var(--mono); font-size:13px; text-decoration:none; color:var(--ink);
+    padding:9px 15px; border:1px solid var(--line); border-radius:2px; transition:.16s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .links a:hover{border-color:var(--accent); color:var(--accent)}
+  .links a.key{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+  .links a.key:hover{background:var(--accent); border-color:var(--accent); color:#fff}
 
-  .svc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 560px) { .svc { grid-template-columns: 1fr; } }
-  .svc div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-  .svc b { font-size: 15px; }
-  .svc p { margin-top: 6px; font-size: 13.5px; color: var(--text-2); }
+  .measures{display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(20px,4vw,48px); padding:44px 0}
+  .measure .n{font-family:var(--serif); font-weight:600; font-size:clamp(34px,5vw,46px); letter-spacing:-.02em; font-variant-numeric:tabular-nums; line-height:1}
+  .measure .n small{font-size:.5em; color:var(--ink-3); font-family:var(--mono); font-weight:400; letter-spacing:0}
+  .meter{height:2px; background:var(--line); margin:16px 0 12px; position:relative; overflow:hidden}
+  .meter i{position:absolute; left:0; top:0; bottom:0; background:var(--accent)}
+  .measure p{font-family:var(--mono); font-size:12px; line-height:1.5; color:var(--ink-2); letter-spacing:.01em}
+  @media (max-width:680px){.measures{grid-template-columns:1fr; gap:28px}}
 
-  footer { padding: 40px 0 64px; border-top: 1px solid var(--border); }
-  footer p { font-size: 14px; color: var(--text-2); }
-  footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-  .fineprint { margin-top: 18px; font-size: 12px; color: var(--text-3); }
+  section{padding:clamp(48px,7vw,80px) 0}
+  .sec-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:44px}
+  .sec-head h2{font-family:var(--serif); font-weight:600; font-size:clamp(20px,3vw,26px); letter-spacing:-.01em}
+
+  .flagship{display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,56px); align-items:center}
+  .flagship + .flagship{margin-top:clamp(48px,7vw,84px)}
+  .flagship.rev .fig{order:-1}
+  @media (max-width:820px){
+    .flagship{grid-template-columns:1fr; gap:26px}
+    .flagship.rev .fig{order:0}
+  }
+  .pj-title{font-family:var(--serif); font-weight:600; font-size:clamp(26px,4vw,36px); letter-spacing:-.01em; line-height:1.05}
+  .pj-meta{font-family:var(--mono); font-size:12px; color:var(--ink-3); margin-top:12px; letter-spacing:.02em}
+  .badge{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); border:1px solid var(--accent); border-radius:2px; padding:3px 8px; vertical-align:3px; margin-left:10px}
+  .pj-body{margin-top:20px; color:var(--ink-2); max-width:52ch}
+  .speclist{list-style:none; margin:22px 0 0; display:grid; gap:11px}
+  .speclist li{font-family:var(--mono); font-size:12.5px; line-height:1.55; color:var(--ink-2); padding-left:22px; position:relative}
+  .speclist li::before{content:"—"; position:absolute; left:0; color:var(--accent)}
+  .demo-link{display:inline-flex; align-items:center; gap:8px; margin-top:26px; font-family:var(--mono); font-size:13px; font-weight:500; color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:2px; transition:.16s}
+  .demo-link:hover{border-color:var(--accent)}
+  .demo-link .arw{transition:transform .18s}
+  .demo-link:hover .arw{transform:translateX(4px)}
+
+  .frame{background:var(--surface); border:1px solid var(--frame); border-radius:4px; padding:10px; box-shadow:0 1px 0 var(--line), 0 24px 48px -28px rgba(15,20,35,.35)}
+  .frame .bar{display:flex; gap:6px; padding:4px 6px 10px}
+  .frame .bar i{width:8px; height:8px; border-radius:50%; background:var(--line)}
+  .frame img{display:block; width:100%; height:auto; border-radius:2px; border:1px solid var(--frame)}
+  .frame figcaption{font-family:var(--mono); font-size:11px; color:var(--ink-3); padding:10px 4px 2px; letter-spacing:.02em}
+
+  .index{margin-top:8px}
+  .row{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px 24px; align-items:baseline; padding:26px 0; border-top:1px solid var(--line)}
+  .row:last-child{border-bottom:1px solid var(--line)}
+  .row .rt{font-family:var(--serif); font-weight:600; font-size:clamp(19px,2.4vw,23px); letter-spacing:-.01em}
+  .row .rm{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); margin-top:6px; letter-spacing:.02em}
+  .row .rd{grid-column:1/-1; color:var(--ink-2); margin-top:10px; max-width:64ch; font-size:15px}
+  .row .rl{font-family:var(--mono); font-size:12.5px; color:var(--accent); text-decoration:none; white-space:nowrap; align-self:start}
+  .row .rl:hover{text-decoration:underline}
+
+  .caps{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden}
+  @media (max-width:680px){.caps{grid-template-columns:1fr}}
+  .cap{background:var(--paper); padding:24px}
+  .cap b{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:500}
+  .cap p{margin-top:10px; color:var(--ink-2); font-size:14.5px}
+
+  .skills{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+  .skills span{font-family:var(--mono); font-size:12.5px; padding:7px 13px; border:1px solid var(--line); border-radius:2px; color:var(--ink-2)}
+
+  footer{padding:64px 0 80px; border-top:1px solid var(--line)}
+  .foot-grid{display:flex; flex-wrap:wrap; justify-content:space-between; gap:24px; align-items:end}
+  footer .big{font-family:var(--serif); font-weight:600; font-size:clamp(24px,4vw,34px); letter-spacing:-.01em; max-width:20ch}
+  footer a.mail{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent)}
+  .fine{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.04em; margin-top:40px}
+
+  @media (prefers-reduced-motion:no-preference){
+    .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+    .rise.d1{animation-delay:.06s}.rise.d2{animation-delay:.13s}.rise.d3{animation-delay:.2s}
+    @keyframes rise{to{opacity:1; transform:none}}
+  }
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
 </style>
 </head>
 <body>
-
 <div class="wrap">
-  <header>
-    <p class="eyebrow">Jakarta, Indonesia</p>
-    <h1>Muhammad Azmi Ghozi Ramadhan</h1>
-    <p class="tagline">
-      I build automation and data tools for operations, planning, and process improvement —
-      turning messy operational workflows into systems that save time, reduce manual errors,
-      and make decisions easier to explain.
+
+  <header class="masthead">
+    <div class="spec rise">
+      <span class="kicker">Portfolio / 2026</span>
+      <span class="dot"></span>
+      <span class="label">Jakarta, ID</span>
+      <span class="dot"></span>
+      <span class="label">Open to SWE &amp; tooling work</span>
+    </div>
+    <h1 class="rise d1">Software for the <em>messy middle</em> of operations.</h1>
+    <p class="sub lede rise d2">
+      I'm Muhammad Azmi Ghozi Ramadhan. I turn manual operational workflows — planning,
+      assessment, document control — into systems that save hours, cut errors, and explain
+      their own decisions.
     </p>
-    <div class="links">
-      <a class="primary" href="mailto:ghoziazmi@gmail.com">Get in touch</a>
-      <a href="https://github.com/gzviolet21" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://linkedin.com/in/ghoziazmi/" target="_blank" rel="noopener">LinkedIn</a>
+    <div class="links rise d3">
+      <a class="key" href="mailto:ghoziazmi@gmail.com">Get in touch</a>
+      <a href="https://github.com/gzviolet21" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://linkedin.com/in/ghoziazmi/" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
   </header>
 
-  <div class="stats">
-    <div class="stat"><b>65%</b><span>planning cycle time cut by production-planning automation</span></div>
-    <div class="stat"><b>40%</b><span>reduction in operational delay after workflow analysis</span></div>
-    <div class="stat"><b>274k</b><span>rows of sensor time-series processed into live dashboards</span></div>
+  <div class="rule"></div>
+
+  <div class="measures">
+    <div class="measure">
+      <div class="n">65<small>%</small></div>
+      <div class="meter"><i style="width:65%"></i></div>
+      <p>planning cycle time cut by production-planning automation</p>
+    </div>
+    <div class="measure">
+      <div class="n">40<small>%</small></div>
+      <div class="meter"><i style="width:40%"></i></div>
+      <p>reduction in operational delay after workflow analysis</p>
+    </div>
+    <div class="measure">
+      <div class="n">274<small>K rows</small></div>
+      <div class="meter"><i style="width:88%"></i></div>
+      <p>sensor time-series processed into live dashboards</p>
+    </div>
   </div>
 
-  <section id="projects">
-    <h2>Selected Projects</h2>
+  <div class="rule"></div>
+
+  <section id="work">
+    <div class="sec-head">
+      <h2>Selected work</h2>
+      <span class="label">2 live demos · try them</span>
+    </div>
 
     <!-- HIDDEN TEMPORARILY: Competency Assessment (Erajaya). To restore, delete this comment opener and its matching closer below.
-    <div class="project">
-      <h3>Competency Assessment Platform <span class="badge">Client work · in production</span></h3>
-      <p class="meta">Erajaya Group — technical competency evaluation for 400+ job roles</p>
-      <p>
-        Full-stack web platform where managers assess employees against role-specific key
-        behaviors, with adaptive scoring that automatically probes one proficiency level up or
-        down based on results. Includes an HR dashboard with period filters and one-click
-        Excel reporting (summary + per-behavior audit trail).
-      </p>
-      <ul>
-        <li>Data pipeline importing 404 roles, 203 competencies, and 3,000+ key behaviors from Excel sources</li>
-        <li>Server-side score derivation — clients only submit checkboxes, results are never trusted from the browser</li>
-        <li>Deployed on Cloudflare Workers + Supabase with domain-restricted auth and 48 unit tests</li>
-      </ul>
-      <div class="tags">
-        <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Supabase</span>
-        <span class="tag">PostgreSQL</span><span class="tag">Cloudflare Workers</span><span class="tag">Python ETL</span>
+    <div class="index" style="margin-bottom:44px">
+      <div class="row">
+        <div>
+          <div class="rt">Competency Assessment Platform</div>
+          <div class="rm">Client work · Erajaya Group · 400+ job roles · in production</div>
+          <p class="rd">Full-stack platform where managers assess employees against role-specific behaviors, with adaptive scoring, an HR dashboard, and one-click Excel reporting. Server-side score derivation, 404 roles / 203 competencies imported from Excel, deployed on Cloudflare Workers + Supabase.</p>
+        </div>
+        <span class="rl">In production</span>
       </div>
     </div>
     END HIDDEN -->
 
-    <div class="project">
-      <h3>CaseForge <span class="badge">Original product · live demo</span></h3>
-      <p class="meta">Case-interview assessment for recruitment screening — a companion to the competency platform above</p>
-      <p>
-        A consulting-style case simulator for evaluating candidates during hiring. Candidates
-        work through timed business cases; the platform auto-scores their reasoning across five
-        capabilities and gives recruiters a per-candidate skill profile — the recruitment-side
-        counterpart to the permanent-employee competency tool above.
-      </p>
-      <ul>
-        <li>9 realistic business cases with multiple-choice, numeric (tolerance-checked), and short-answer questions graded against rubrics</li>
-        <li>Adaptive case selection that steers candidates toward their weaker skill areas based on prior attempts</li>
-        <li>Recruiter dashboard: skill-profile bar charts, cohort stats, integrity flags, and human-in-the-loop recommendations</li>
-      </ul>
-      <div class="tags">
-        <span class="tag">JavaScript</span><span class="tag">Assessment design</span><span class="tag">Auto-scoring</span><span class="tag">Recruiter analytics</span>
+    <div class="flagship">
+      <div>
+        <div class="pj-title">CaseForge <span class="badge">Live demo</span></div>
+        <div class="pj-meta">Case-interview assessment · recruitment screening · original product</div>
+        <p class="pj-body">
+          A consulting-style case simulator for evaluating candidates during hiring. Candidates
+          work through timed business cases; the platform auto-scores their reasoning and gives
+          recruiters a per-candidate skill profile.
+        </p>
+        <ul class="speclist">
+          <li>9 business cases · multiple-choice, tolerance-checked numeric, and rubric-graded short answers</li>
+          <li>Adaptive case selection that targets a candidate's weaker skills</li>
+          <li>Recruiter dashboard: skill charts, cohort stats, integrity flags</li>
+        </ul>
+        <a class="demo-link" href="https://gzviolet21.github.io/caseforge/" target="_blank" rel="noopener">Open the live demo <span class="arw">→</span></a>
       </div>
-      <a class="plink" href="https://gzviolet21.github.io/caseforge/" target="_blank" rel="noopener">Try the live demo (CaseForge) →</a>
+      <figure class="frame fig">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <img src="assets/caseforge.jpg" width="920" height="591" loading="lazy" alt="CaseForge assessment landing screen showing case setup and rotating case library" />
+        <figcaption>gzviolet21.github.io/caseforge</figcaption>
+      </figure>
     </div>
 
-    <div class="project">
-      <h3>Auto Planning &amp; Document Management System <span class="badge">Internal tooling · manufacturing</span></h3>
-      <p class="meta">Built for a multinational manufacturing company (under NDA) — live demo rebuilt below</p>
-      <p>
-        Two internal tools for manufacturing operations. A Python production-planning
-        automation that cut planning cycle time by 65% — and a document-control system
-        that digitized a manual, hand-carried document flow between Production and QA:
-        production submits actual product specs, QA gets notified automatically, and
-        rejections flow back with feedback so QC passes happen faster.
-      </p>
-      <ul>
-        <li>Cross-division workflow: new spec upload → automatic QA notification; QA verdict → automatic feedback to Production</li>
-        <li>Shared visibility: both teams see exactly what is in review, approved, or awaiting revision</li>
-        <li>Original is company-internal — the demo below rebuilds the same logic end to end</li>
-      </ul>
-      <div class="tags">
-        <span class="tag">Python</span><span class="tag">Workflow design</span><span class="tag">Notifications</span><span class="tag">Process digitization</span>
+    <div class="flagship rev">
+      <div>
+        <div class="pj-title">Auto Planning &amp; Document Management <span class="badge">Live demo</span></div>
+        <div class="pj-meta">Internal tooling · multinational manufacturing (NDA)</div>
+        <p class="pj-body">
+          Two internal tools for manufacturing operations: a Python planning automation that cut
+          cycle time 65%, and a document-control system that digitized a hand-carried Production↔QA
+          spec flow. The live demo (SpecFlow) rebuilds the document-control logic end to end.
+        </p>
+        <ul class="speclist">
+          <li>New spec upload → automatic QA notification; QA verdict → automatic feedback to Production</li>
+          <li>Shared visibility: both teams see what is in review, approved, or awaiting revision</li>
+          <li>Status pills, cross-team notifications, and a role switcher to feel both sides</li>
+        </ul>
+        <a class="demo-link" href="https://gzviolet21.github.io/specflow-demo/" target="_blank" rel="noopener">Open the SpecFlow demo <span class="arw">→</span></a>
       </div>
-      <a class="plink" href="https://gzviolet21.github.io/specflow-demo/" target="_blank" rel="noopener">Try the live demo (SpecFlow) →</a>
+      <figure class="frame fig">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <img src="assets/specflow.jpg" width="1100" height="752" loading="lazy" alt="SpecFlow document-control dashboard with submitted specs and QA review statuses" />
+        <figcaption>gzviolet21.github.io/specflow-demo</figcaption>
+      </figure>
     </div>
 
-    <div class="project">
-      <h3>Alumni LinkedIn Sync</h3>
-      <p class="meta">Open source — Python automation</p>
-      <p>
-        Maintains an alumni database by finding likely LinkedIn profile matches, scoring match
-        confidence, and updating Google Sheets job-status fields — with dry runs, confidence
-        thresholds, and human review gates so automation stays conservative.
-      </p>
-      <div class="tags">
-        <span class="tag">Python</span><span class="tag">Google Sheets API</span><span class="tag">Playwright</span>
+    <div class="index" style="margin-top:clamp(48px,7vw,84px)">
+      <div class="row">
+        <div>
+          <div class="rt">Alumni LinkedIn Sync</div>
+          <div class="rm">Open source · Python automation</div>
+          <p class="rd">Maintains an alumni database by scoring likely LinkedIn matches and updating Google Sheets, with dry runs, confidence thresholds, and human review gates so automation stays conservative.</p>
+        </div>
+        <a class="rl" href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
-      <a class="plink" href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">View on GitHub →</a>
-    </div>
-
-    <div class="project">
-      <h3>Coffee Track VI</h3>
-      <p class="meta">Open source — mobile-first web app</p>
-      <p>
-        Coffee journaling app with Supabase auth, photo logs, personal stats, and map-based
-        cafe history — a small product built end-to-end: auth, storage, and data visualization.
-      </p>
-      <div class="tags">
-        <span class="tag">React</span><span class="tag">Supabase</span><span class="tag">Maps</span>
+      <div class="row">
+        <div>
+          <div class="rt">Coffee Track VI</div>
+          <div class="rm">Open source · mobile-first web app</div>
+          <p class="rd">A coffee journal built end-to-end — Supabase auth, photo logs, personal stats, and map-based cafe history.</p>
+        </div>
+        <a class="rl" href="https://github.com/gzviolet21/coffee-track-vi" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
-      <a class="plink" href="https://github.com/gzviolet21/coffee-track-vi" target="_blank" rel="noopener">View on GitHub →</a>
     </div>
   </section>
 
-  <section id="skills">
-    <h2>Tools I Work With</h2>
+  <div class="rule"></div>
+
+  <section id="build">
+    <div class="sec-head"><h2>What I build</h2><span class="label">Capabilities</span></div>
+    <div class="caps">
+      <div class="cap"><b>Internal web tools</b><p>Assessment platforms, dashboards, approval flows — from spreadsheet chaos to a real app your team logs into.</p></div>
+      <div class="cap"><b>Planning &amp; reporting automation</b><p>Python pipelines that turn multi-hour manual cycles into minutes.</p></div>
+      <div class="cap"><b>Data cleanup &amp; migration</b><p>Messy Excel/legacy data validated, transformed, and loaded into a proper database.</p></div>
+      <div class="cap"><b>Operations analytics</b><p>Forecasting, process analysis, and dashboards non-technical stakeholders actually use.</p></div>
+    </div>
     <div class="skills">
       <span>Python</span><span>TypeScript</span><span>Next.js / React</span><span>Supabase / PostgreSQL</span>
-      <span>Excel &amp; Power BI</span><span>KNIME</span><span>Playwright</span><span>Chart.js</span>
-      <span>Cloudflare / Vercel</span><span>Git &amp; CI</span>
-    </div>
-  </section>
-
-  <section id="services">
-    <h2>What I Can Build For You</h2>
-    <div class="svc">
-      <div><b>Internal web tools</b><p>Assessment platforms, dashboards, approval flows — from spreadsheet chaos to a real app your team logs into.</p></div>
-      <div><b>Planning &amp; reporting automation</b><p>Python pipelines that turn manual multi-hour planning or reporting cycles into minutes.</p></div>
-      <div><b>Data cleanup &amp; migration</b><p>Messy Excel/legacy data validated, transformed, and loaded into a proper database.</p></div>
-      <div><b>Operations analytics</b><p>Forecasting, process analysis, and dashboards that non-technical stakeholders actually use.</p></div>
+      <span>Excel &amp; Power BI</span><span>KNIME</span><span>Playwright</span><span>Cloudflare / Vercel</span><span>Git &amp; CI</span>
     </div>
   </section>
 
   <footer>
-    <p>Have an operational workflow that eats your team's time? <a href="mailto:ghoziazmi@gmail.com">Email me</a> — I reply within a day.</p>
-    <p class="fineprint">© 2026 Muhammad Azmi Ghozi Ramadhan · Jakarta, Indonesia</p>
+    <div class="foot-grid">
+      <p class="big">Have a workflow that eats your team's time? Let's turn it into software.</p>
+      <a class="mail" href="mailto:ghoziazmi@gmail.com">ghoziazmi@gmail.com</a>
+    </div>
+    <p class="fine">© 2026 Muhammad Azmi Ghozi Ramadhan · Jakarta, Indonesia</p>
   </footer>
-</div>
 
+</div>
 </body>
 </html>
