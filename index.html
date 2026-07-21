@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muhammad Azmi Ghozi Ramadhan — Automation & Data Tools</title>
+<meta name="description" content="Python automation and operations analytics. Building data tools for planning, forecasting, and process improvement. Jakarta, Indonesia.">
+<style>
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --text: #1c1917;
+    --text-2: #57534e;
+    --text-3: #a8a29e;
+    --border: #e7e5e4;
+    --accent: #2e3192;
+    --accent-soft: #eef0ff;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c0a09;
+      --surface: #1c1917;
+      --text: #fafaf9;
+      --text-2: #d6d3d1;
+      --text-3: #78716c;
+      --border: #292524;
+      --accent: #8f94ff;
+      --accent-soft: #1e2046;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+  header { padding: 72px 0 40px; }
+  .eyebrow { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-top: 10px; letter-spacing: -0.02em; }
+  .tagline { margin-top: 14px; font-size: 17px; color: var(--text-2); max-width: 560px; }
+  .links { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .links a {
+    display: inline-block; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    text-decoration: none; border: 1px solid var(--border); color: var(--text-2); transition: all .15s;
+  }
+  .links a:hover { border-color: var(--accent); color: var(--accent); }
+  .links a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .links a.primary:hover { opacity: .9; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 8px 0 0; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; }
+  .stat b { display: block; font-size: 26px; letter-spacing: -0.02em; color: var(--accent); }
+  .stat span { font-size: 13px; color: var(--text-2); line-height: 1.4; display: block; margin-top: 4px; }
+  @media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+
+  section { padding: 40px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); font-weight: 600; margin-bottom: 24px; }
+
+  .project { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .project + .project { margin-top: 16px; }
+  .project h3 { font-size: 18px; letter-spacing: -0.01em; }
+  .project .meta { margin-top: 4px; font-size: 13px; color: var(--text-3); }
+  .project p { margin-top: 12px; font-size: 15px; color: var(--text-2); }
+  .project ul { margin: 12px 0 0 18px; font-size: 14px; color: var(--text-2); }
+  .project ul li + li { margin-top: 5px; }
+  .tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+  .plink { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .plink:hover { text-decoration: underline; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-3); vertical-align: 2px; margin-left: 8px; }
+
+  .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skills span { font-size: 13.5px; padding: 7px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text-2); }
+
+  .svc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .svc { grid-template-columns: 1fr; } }
+  .svc div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .svc b { font-size: 15px; }
+  .svc p { margin-top: 6px; font-size: 13.5px; color: var(--text-2); }
+
+  footer { padding: 40px 0 64px; border-top: 1px solid var(--border); }
+  footer p { font-size: 14px; color: var(--text-2); }
+  footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .fineprint { margin-top: 18px; font-size: 12px; color: var(--text-3); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Jakarta, Indonesia</p>
+    <h1>Muhammad Azmi Ghozi Ramadhan</h1>
+    <p class="tagline">
+      I build automation and data tools for operations, planning, and process improvement —
+      turning messy operational workflows into systems that save time, reduce manual errors,
+      and make decisions easier to explain.
+    </p>
+    <div class="links">
+      <a class="primary" href="mailto:ghoziazmi@gmail.com">Get in touch</a>
+      <a href="https://github.com/gzviolet21" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/ghoziazmi/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>65%</b><span>planning cycle time cut by production-planning automation</span></div>
+    <div class="stat"><b>40%</b><span>reduction in operational delay after workflow analysis</span></div>
+    <div class="stat"><b>274k</b><span>rows of sensor time-series processed into live dashboards</span></div>
+  </div>
+
+  <section id="projects">
+    <h2>Selected Projects</h2>
+
+    <div class="project">
+      <h3>Competency Assessment Platform <span class="badge">Client work · in production</span></h3>
+      <p class="meta">Erajaya Group — technical competency evaluation for 400+ job roles</p>
+      <p>
+        Full-stack web platform where managers assess employees against role-specific key
+        behaviors, with adaptive scoring that automatically probes one proficiency level up or
+        down based on results. Includes an HR dashboard with period filters and one-click
+        Excel reporting (summary + per-behavior audit trail).
+      </p>
+      <ul>
+        <li>Data pipeline importing 404 roles, 203 competencies, and 3,000+ key behaviors from Excel sources</li>
+        <li>Server-side score derivation — clients only submit checkboxes, results are never trusted from the browser</li>
+        <li>Deployed on Cloudflare Workers + Supabase with domain-restricted auth and 48 unit tests</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Supabase</span>
+        <span class="tag">PostgreSQL</span><span class="tag">Cloudflare Workers</span><span class="tag">Python ETL</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <h3>Auto Planning &amp; Document Management System <span class="badge">Internal tooling</span></h3>
+      <p class="meta">Production planning automation &amp; controlled document workflows</p>
+      <p>
+        Python-based production-planning automation paired with a structured document
+        management workflow — generating plans that previously took a full manual cycle,
+        and keeping the documents that drive them versioned, findable, and consistent.
+        Cut planning cycle time by 65%.
+      </p>
+      <ul>
+        <li>Automated plan generation from live operational data, replacing error-prone manual spreadsheets</li>
+        <li>Document control: single source of truth, revision tracking, and clear ownership per document</li>
+        <li>Built for daily use by planners — practical outputs, not black-box models</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">Excel automation</span><span class="tag">Process design</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <h3>Alumni LinkedIn Sync</h3>
+      <p class="meta">Open source — Python automation</p>
+      <p>
+        Maintains an alumni database by finding likely LinkedIn profile matches, scoring match
+        confidence, and updating Google Sheets job-status fields — with dry runs, confidence
+        thresholds, and human review gates so automation stays conservative.
+      </p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">Google Sheets API</span><span class="tag">Playwright</span>
+      </div>
+      <a class="plink" href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">View on GitHub →</a>
+    </div>
+
+    <div class="project">
+      <h3>Coffee Track VI</h3>
+      <p class="meta">Open source — mobile-first web app</p>
+      <p>
+        Coffee journaling app with Supabase auth, photo logs, personal stats, and map-based
+        cafe history — a small product built end-to-end: auth, storage, and data visualization.
+      </p>
+      <div class="tags">
+        <span class="tag">React</span><span class="tag">Supabase</span><span class="tag">Maps</span>
+      </div>
+      <a class="plink" href="https://github.com/gzviolet21/coffee-track-vi" target="_blank" rel="noopener">View on GitHub →</a>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Tools I Work With</h2>
+    <div class="skills">
+      <span>Python</span><span>TypeScript</span><span>Next.js / React</span><span>Supabase / PostgreSQL</span>
+      <span>Excel &amp; Power BI</span><span>KNIME</span><span>Playwright</span><span>Chart.js</span>
+      <span>Cloudflare / Vercel</span><span>Git &amp; CI</span>
+    </div>
+  </section>
+
+  <section id="services">
+    <h2>What I Can Build For You</h2>
+    <div class="svc">
+      <div><b>Internal web tools</b><p>Assessment platforms, dashboards, approval flows — from spreadsheet chaos to a real app your team logs into.</p></div>
+      <div><b>Planning &amp; reporting automation</b><p>Python pipelines that turn manual multi-hour planning or reporting cycles into minutes.</p></div>
+      <div><b>Data cleanup &amp; migration</b><p>Messy Excel/legacy data validated, transformed, and loaded into a proper database.</p></div>
+      <div><b>Operations analytics</b><p>Forecasting, process analysis, and dashboards that non-technical stakeholders actually use.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Have an operational workflow that eats your team's time? <a href="mailto:ghoziazmi@gmail.com">Email me</a> — I reply within a day.</p>
+    <p class="fineprint">© 2026 Muhammad Azmi Ghozi Ramadhan · Jakarta, Indonesia</p>
+  </footer>
+</div>
+
+</body>
+</html>
