@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<title>Competency Assessment Platform — Case study · Muhammad Azmi Ghozi Ramadhan</title>
+<meta name="description" content="How the Erajaya competency assessment platform works: role-specific behavior scoring for 400+ roles, server-side score derivation, and one-click HR reporting.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/assets/case.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a class="back" href="/">Portfolio</a>
+    <span class="label">Client work · private</span>
+  </nav>
+
+  <header class="h reveal">
+    <p class="kicker">Case study · Client work · In production</p>
+    <h1>Competency Assessment Platform</h1>
+    <p class="dek">
+      A full-stack platform for Erajaya Group where managers assess employees against
+      role-specific behaviors — with adaptive scoring, a server-side trust boundary, and
+      one-click HR reporting across 400+ job roles.
+    </p>
+    <div class="metaline">
+      <span>Role <b>Design &amp; build (solo)</b></span>
+      <span>Client <b>Erajaya Group</b></span>
+      <span>Stack <b>Next.js · Supabase · Cloudflare Workers</b></span>
+      <span>Status <b>In production</b></span>
+    </div>
+    <div class="cta">
+      <a class="key" href="mailto:ghoziazmi@gmail.com">Discuss a similar build</a>
+      <a href="/">← Back to portfolio</a>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">01 — Problem</span></div>
+      <h2>Assessing competency across 400+ roles, by hand</h2>
+      <p>
+        Technical competency reviews were run out of spreadsheets: every role had its own set of
+        expected behaviors, managers scored them by hand, and HR stitched the results back together
+        for reporting. At the scale of <strong>404 job roles and 3,000+ key behaviors</strong>, that
+        is slow, inconsistent between managers, and nearly impossible to audit.
+      </p>
+      <p>
+        The brief was a real application HR and managers log into — one that holds the whole
+        competency framework, guides a consistent assessment, and produces defensible reports
+        without anyone touching a spreadsheet.
+      </p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">02 — Approach</span></div>
+      <h2>A framework the app enforces, not a form it displays</h2>
+      <p>
+        The competency framework — roles, competencies, and the key behaviors under each — is
+        modelled as data, imported once and enforced everywhere. A manager assessing an employee
+        only ever sees the behaviors that belong to that role, and the scoring adapts to the
+        answers:
+      </p>
+      <ul class="caps">
+        <li><b>Role-scoped behaviors</b><span class="how">404 roles</span><span>Each assessment is generated from the target role — no irrelevant criteria, no manual setup.</span></li>
+        <li><b>Adaptive scoring</b><span class="how">probe ±1 level</span><span>Results automatically probe one proficiency level up or down, so the assessment homes in on the real level instead of asking everything.</span></li>
+        <li><b>HR dashboard</b><span class="how">period filters</span><span>Results roll up with period filters and a one-click Excel export — a summary plus a per-behavior audit trail.</span></li>
+      </ul>
+      <div class="note">
+        <span class="label">Design decision — trust boundary</span>
+        <p>The browser only ever submits <strong>checkboxes</strong>. Every score is derived <strong>server-side</strong> from the framework — results are never trusted from the client — so a tampered request can't inflate a rating. Behind domain-restricted auth, covered by 48 unit tests.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">03 — Architecture</span></div>
+      <h2>From Excel source to audited report</h2>
+      <p>
+        A Python ETL step imports the framework from the client's Excel sources into Postgres. The
+        assessment app reads role-scoped behaviors from there; when a manager submits, the scoring
+        runs on the server and writes a result HR can filter and export.
+      </p>
+    </div>
+    <div class="arch">
+      <div class="flow">
+        <div class="node">
+          <div class="nt">Ingest</div>
+          <div class="nb">Python ETL</div>
+          <div class="nd">404 roles · 203 competencies · 3,000+ behaviors from Excel → Postgres</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Manager</div>
+          <div class="nb">Assessment app</div>
+          <div class="nd">Role-scoped behaviors · submits checkboxes only</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Server</div>
+          <div class="nb">Scoring engine</div>
+          <div class="nd">Adaptive derivation on Cloudflare Workers — never trusts the client</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">HR</div>
+          <div class="nb">Dashboard &amp; export</div>
+          <div class="nd">Period filters · one-click Excel (summary + audit trail)</div>
+        </div>
+      </div>
+      <div class="loop"><b>trust boundary</b> — everything left of the scoring engine is untrusted input; the score is only ever computed on the server from the framework.</div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">04 — What it demonstrates</span></div>
+      <h2>A production system with real constraints</h2>
+      <p>
+        This is the difference between a demo and a system in production: a data pipeline importing
+        a client's real framework, a security-minded server-side trust boundary, adaptive logic
+        that mirrors how assessment actually works, and reporting an HR team depends on — deployed,
+        auth-gated, and tested.
+      </p>
+      <div class="facts">
+        <div class="fact"><b>404</b><span>job roles · 203 competencies · 3,000+ behaviors</span></div>
+        <div class="fact"><b>100%</b><span>scores derived server-side, never from the browser</span></div>
+        <div class="fact"><b>48</b><span>unit tests · domain-restricted auth</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <p class="big">Need an internal assessment or reporting system that HR can actually trust?</p>
+      <a class="mail" href="mailto:ghoziazmi@gmail.com">ghoziazmi@gmail.com</a>
+    </div>
+    <p class="fine">© 2026 Muhammad Azmi Ghozi Ramadhan · <a href="/" style="color:inherit">Back to portfolio</a></p>
+  </footer>
+
+</div>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+<script src="/assets/reveal.js" defer></script>
+</body>
+</html>

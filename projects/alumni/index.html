@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<title>Alumni LinkedIn Sync — Case study · Muhammad Azmi Ghozi Ramadhan</title>
+<meta name="description" content="How Alumni LinkedIn Sync works: a conservative Python pipeline that finds LinkedIn matches, scores confidence, and only writes to a Google Sheet when it is sure.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/assets/case.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a class="back" href="/">Portfolio</a>
+    <a href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
+
+  <header class="h reveal">
+    <p class="kicker">Case study · Open source</p>
+    <h1>Alumni LinkedIn Sync</h1>
+    <p class="dek">
+      A Python automation that keeps an alumni database current without blindly overwriting it —
+      it finds likely LinkedIn matches, scores how confident it is, and only writes when it is
+      sure. Everything else is routed to a human.
+    </p>
+    <div class="metaline">
+      <span>Role <b>Design &amp; build (solo)</b></span>
+      <span>Type <b>Data pipeline / automation</b></span>
+      <span>Stack <b>Python · Playwright · Sheets API</b></span>
+      <span>Status <b>Open source</b></span>
+    </div>
+    <div class="cta">
+      <a class="key" href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">View on GitHub ↗</a>
+      <a href="/">← Back to portfolio</a>
+    </div>
+  </header>
+
+  <div class="terminal reveal">
+    <div class="tbar"><i></i><i></i><i></i><span>sync_alumni_linkedin.py — dry run</span></div>
+<pre><span class="p">$</span> python sync_alumni_linkedin.py <span class="c">--dry-run</span> --limit 20
+
+<span class="m"># row 42  · Dewi Lestari · Marketing '18</span>
+  candidate found ....... linkedin.com/in/dewi-lestari-xxxx
+  score ................. <span class="c">0.92</span>  (name+school+company match)
+  action ................ <span class="c">WRITE</span>  company, role, location
+<span class="m"># row 43  · Andi Pratama · Engineering '17</span>
+  candidate found ....... 2 possible profiles
+  score ................. <span class="w">0.54</span>  (ambiguous — name only)
+  action ................ <span class="w">REVIEW</span>  → written to review column, data untouched
+<span class="m"># row 44  · Siti Rahayu · Finance '19</span>
+  candidate found ....... none above threshold
+  action ................ <span class="m">SKIP</span>   existing values preserved
+
+<span class="m">dry run — 0 cells written · 1 queued for review · 18 unchanged</span></pre>
+  </div>
+
+  <div class="rule"></div>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">01 — Problem</span></div>
+      <h2>Alumni data goes stale faster than anyone can chase it</h2>
+      <p>
+        Titles, companies, and locations change constantly across hundreds of alumni rows. Keeping
+        the tracker current meant manually searching profile after profile — tedious enough that it
+        simply didn't get done, and the database drifted out of date.
+      </p>
+      <p>
+        Automating it is easy to get wrong: a naive scraper that overwrites rows on a fuzzy match
+        will <strong>corrupt good data</strong>. The real problem was doing it <em>conservatively</em>
+        — fast where it's confident, hands-off where it isn't.
+      </p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">02 — Approach</span></div>
+      <h2>Confidence decides whether the machine or a human writes</h2>
+      <p>
+        Each row runs through the same pipeline, and a confidence score decides what happens next.
+        The default posture is caution: when in doubt, don't touch clean data.
+      </p>
+      <ul class="caps">
+        <li><b>Match &amp; score</b><span class="how">name · school · dept · company</span><span>Candidate profiles are scored on multiple signals, not a single fuzzy name match.</span></li>
+        <li><b>High confidence → write</b><span class="how">scrape &amp; update</span><span>Current company, role, location, and status are scraped and written — but blank scraped fields never overwrite existing values.</span></li>
+        <li><b>Low confidence → review</b><span class="how">human gate</span><span>Ambiguous matches go to a review column instead of overwriting, with row-level notes and a last-checked date for repeatable follow-up.</span></li>
+      </ul>
+      <div class="note">
+        <span class="label">Design decision — safety first</span>
+        <p><strong>Dry-run and discover-only modes</strong> let you preview every planned write before anything touches the sheet. The pipeline is built to be run repeatedly and conservatively — it would rather do nothing than do harm.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">03 — Architecture</span></div>
+      <h2>A guarded pipeline from sheet to sheet</h2>
+      <p>
+        The tool reads the alumni table from Google Sheets, discovers candidates through
+        configurable search providers, scrapes only the profiles it trusts, and writes back through
+        a confidence gate — recording status, notes, and a timestamp on every row it considers.
+      </p>
+    </div>
+    <div class="arch">
+      <div class="flow">
+        <div class="node">
+          <div class="nt">Read</div>
+          <div class="nb">Google Sheet</div>
+          <div class="nd">Alumni rows with missing, stale, or broken data (gspread)</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Discover</div>
+          <div class="nb">Search + score</div>
+          <div class="nd">SerpAPI / Google / Bing → candidates scored on multiple signals</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Gate</div>
+          <div class="nb">Confidence check</div>
+          <div class="nd">High → scrape (Playwright); low → review column</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Write</div>
+          <div class="nb">Update sheet</div>
+          <div class="nd">Preserve blanks · record status, notes, last-checked date</div>
+        </div>
+      </div>
+      <div class="loop"><b>dry-run first</b> — every run can preview its writes before committing, so the pipeline is safe to run again and again.</div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">04 — What it demonstrates</span></div>
+      <h2>Automation that knows its own limits</h2>
+      <p>
+        The interesting engineering here isn't scraping — it's restraint: encoding confidence,
+        building review gates and dry runs, and preserving good data by default. It's the judgment
+        that separates automation you can trust from a script that quietly wrecks a database.
+      </p>
+      <div class="facts">
+        <div class="fact"><b>3</b><span>outcomes per row — write, review, or skip</span></div>
+        <div class="fact"><b>2</b><span>preview modes — dry-run &amp; discover-only</span></div>
+        <div class="fact"><b>0</b><span>blind overwrites — blanks never clobber clean data</span></div>
+      </div>
+      <div class="stack">
+        <span>Python</span><span>gspread / Sheets API</span><span>Playwright</span><span>SerpAPI</span><span>python-dotenv</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <p class="big">Have a manual research or data-cleanup loop that should run itself — safely?</p>
+      <a class="mail" href="mailto:ghoziazmi@gmail.com">ghoziazmi@gmail.com</a>
+    </div>
+    <p class="fine">© 2026 Muhammad Azmi Ghozi Ramadhan · <a href="/" style="color:inherit">Back to portfolio</a></p>
+  </footer>
+
+</div>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+<script src="/assets/reveal.js" defer></script>
+</body>
+</html>

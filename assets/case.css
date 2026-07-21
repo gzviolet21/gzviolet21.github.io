@@ -1,0 +1,126 @@
+/* Shared case-study design system — editorial "Drafting Room" */
+@font-face{
+  font-family:"Fraunces"; font-style:normal; font-weight:400 700; font-display:swap;
+  src:url("/assets/fonts/fraunces-latin.woff2") format("woff2");
+}
+:root{
+  --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
+  --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
+  --surface:#F4F5F7; --frame:#DCE0E6;
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,ui-serif,serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0F1216; --ink:#EDEFF2; --ink-2:#A9B0BC; --ink-3:#6D7482;
+    --line:#262B33; --accent:#8CA0E8; --accent-soft:rgba(140,160,232,.12);
+    --surface:#161A20; --frame:#20252D;
+  }
+}
+:root[data-theme="light"]{
+  --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
+  --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
+  --surface:#F4F5F7; --frame:#DCE0E6;
+}
+:root[data-theme="dark"]{
+  --paper:#0F1216; --ink:#EDEFF2; --ink-2:#A9B0BC; --ink-3:#6D7482;
+  --line:#262B33; --accent:#8CA0E8; --accent-soft:rgba(140,160,232,.12);
+  --surface:#161A20; --frame:#20252D;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+.wrap{max-width:1120px; margin:0 auto; padding:0 clamp(20px,5vw,56px)}
+.col{max-width:680px}
+
+.kicker{font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:500}
+.label{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3)}
+
+.rule{position:relative; height:1px; background:var(--line)}
+.rule::before,.rule::after{content:""; position:absolute; top:-4px; width:1px; height:9px; background:var(--line)}
+.rule::before{left:0} .rule::after{right:0}
+
+.topnav{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-family:var(--mono); font-size:12.5px}
+.topnav a{color:var(--ink-2); text-decoration:none}
+.topnav a:hover{color:var(--accent)}
+.topnav .back::before{content:"← "; color:var(--accent)}
+
+header.h{padding:clamp(40px,7vw,72px) 0 36px}
+h1{font-family:var(--serif); font-weight:600; font-size:clamp(40px,8vw,74px); line-height:.98; letter-spacing:-.02em; margin:18px 0 0}
+.dek{font-size:clamp(17px,2.2vw,20px); color:var(--ink-2); max-width:56ch; margin-top:22px}
+.metaline{display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:26px; font-family:var(--mono); font-size:12px; color:var(--ink-3)}
+.metaline b{color:var(--ink-2); font-weight:500}
+.cta{margin-top:30px; display:flex; flex-wrap:wrap; gap:10px}
+.cta a{font-family:var(--mono); font-size:13px; text-decoration:none; padding:10px 16px; border:1px solid var(--line); border-radius:2px; color:var(--ink); transition:.16s}
+.cta a:hover{border-color:var(--accent); color:var(--accent)}
+.cta a.key{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.cta a.key:hover{background:var(--accent); border-color:var(--accent); color:#fff}
+
+.frame{background:var(--surface); border:1px solid var(--frame); border-radius:5px; padding:10px; box-shadow:0 1px 0 var(--line), 0 30px 60px -34px rgba(15,20,35,.4); margin:clamp(28px,5vw,48px) 0}
+.frame .bar{display:flex; gap:6px; padding:4px 6px 10px}
+.frame .bar i{width:8px; height:8px; border-radius:50%; background:var(--line)}
+.frame img{display:block; width:100%; height:auto; border-radius:3px; border:1px solid var(--frame)}
+.frame figcaption{font-family:var(--mono); font-size:11px; color:var(--ink-3); padding:11px 4px 2px; letter-spacing:.02em}
+
+section{padding:clamp(30px,5vw,52px) 0}
+.eyebrow-row{display:flex; align-items:baseline; gap:14px; margin-bottom:20px}
+h2{font-family:var(--serif); font-weight:600; font-size:clamp(23px,3.4vw,32px); letter-spacing:-.01em}
+section p{color:var(--ink-2); font-size:16.5px; margin-top:16px}
+section p:first-of-type{margin-top:0}
+.col strong{color:var(--ink); font-weight:600}
+
+.caps{list-style:none; margin:26px 0 0; display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden}
+.caps li{background:var(--paper); padding:16px 18px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 16px; align-items:baseline}
+.caps li b{font-family:var(--mono); font-size:13px; color:var(--ink)}
+.caps li .how{font-family:var(--mono); font-size:11.5px; color:var(--accent); letter-spacing:.02em; text-align:right}
+.caps li span{grid-column:1/-1; font-size:14px; color:var(--ink-2)}
+@media (max-width:560px){.caps li .how{text-align:left}}
+
+.arch{margin:30px 0 6px; border:1px solid var(--line); border-radius:6px; background:var(--surface); padding:clamp(20px,4vw,34px); overflow-x:auto}
+.flow{display:flex; align-items:stretch; gap:0; min-width:640px}
+.node{flex:1; background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:16px 15px}
+.node .nt{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent)}
+.node .nb{font-size:14px; color:var(--ink); margin-top:8px; font-weight:600; font-family:var(--serif)}
+.node .nd{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:7px; line-height:1.5}
+.arrow{flex:0 0 34px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:18px}
+.loop{margin-top:14px; font-family:var(--mono); font-size:11.5px; color:var(--ink-3); display:flex; align-items:center; gap:8px}
+.loop b{color:var(--accent); font-weight:500}
+
+.note{margin:26px 0 0; border-left:2px solid var(--accent); padding:4px 0 4px 20px}
+.note p{font-size:15px; color:var(--ink-2); margin:0}
+.note .label{display:block; margin-bottom:6px}
+
+.facts{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-top:24px}
+@media (max-width:620px){.facts{grid-template-columns:1fr}}
+.fact{background:var(--paper); padding:20px}
+.fact b{font-family:var(--serif); font-size:26px; font-weight:600; letter-spacing:-.01em; font-variant-numeric:tabular-nums}
+.fact span{display:block; font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:6px; letter-spacing:.03em; line-height:1.5}
+
+/* terminal — for CLI/automation projects with no UI */
+.terminal{margin:clamp(28px,5vw,44px) 0; border:1px solid var(--frame); border-radius:5px; background:#0d1117; overflow:hidden; box-shadow:0 30px 60px -34px rgba(15,20,35,.5)}
+.terminal .tbar{display:flex; align-items:center; gap:6px; padding:11px 14px; background:#161b22; border-bottom:1px solid #21262d}
+.terminal .tbar i{width:8px; height:8px; border-radius:50%; background:#30363d}
+.terminal .tbar span{font-family:var(--mono); font-size:11px; color:#7d8590; margin-left:8px; letter-spacing:.03em}
+.terminal pre{margin:0; padding:20px; font-family:var(--mono); font-size:12.5px; line-height:1.75; color:#c9d1d9; overflow-x:auto; white-space:pre}
+.terminal .p{color:#8CA0E8}
+.terminal .c{color:#7ee787}
+.terminal .m{color:#7d8590}
+.terminal .w{color:#e3b341}
+
+/* stack chips */
+.stack{display:flex; flex-wrap:wrap; gap:8px; margin-top:24px}
+.stack span{font-family:var(--mono); font-size:12.5px; padding:7px 13px; border:1px solid var(--line); border-radius:2px; color:var(--ink-2)}
+
+footer{padding:56px 0 80px; border-top:1px solid var(--line); margin-top:clamp(30px,6vw,60px)}
+.foot-grid{display:flex; flex-wrap:wrap; justify-content:space-between; gap:20px; align-items:end}
+footer .big{font-family:var(--serif); font-weight:600; font-size:clamp(22px,3.4vw,30px); letter-spacing:-.01em; max-width:22ch}
+footer a.mail{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent)}
+.fine{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.04em; margin-top:36px}
+a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+/* scroll reveal (respects reduced motion via JS guard) */
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1; transform:none; transition:none}}

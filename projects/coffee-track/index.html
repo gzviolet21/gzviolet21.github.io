@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<title>Brew Notes — Case study · Muhammad Azmi Ghozi Ramadhan</title>
+<meta name="description" content="How Brew Notes works: a mobile-first coffee journal built end-to-end with Next.js and Supabase — auth, photo uploads, geolocation, stats, and a map view.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/assets/case.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a class="back" href="/">Portfolio</a>
+    <a href="https://coffee-track-vi.vercel.app/" target="_blank" rel="noopener">Live demo ↗</a>
+  </nav>
+
+  <header class="h reveal">
+    <p class="kicker">Case study · Open source</p>
+    <h1>Brew Notes</h1>
+    <p class="dek">
+      A mobile-first coffee journal built end to end — log a cafe visit in seconds, then revisit
+      it through a feed, stats, and a map. A small product that touches the whole stack:
+      auth, validation, storage, geolocation, and route protection.
+    </p>
+    <div class="metaline">
+      <span>Role <b>Design &amp; build (solo)</b></span>
+      <span>Type <b>Full-stack web app</b></span>
+      <span>Stack <b>Next.js 14 · TypeScript · Supabase</b></span>
+      <span>Status <b>Open source · live</b></span>
+    </div>
+    <div class="cta">
+      <a class="key" href="https://coffee-track-vi.vercel.app/" target="_blank" rel="noopener">Open the live app ↗</a>
+      <a href="https://github.com/gzviolet21/coffee-track-vi" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">01 — Problem</span></div>
+      <h2>Capture the moment fast, understand it later</h2>
+      <p>
+        A coffee journal only works if logging is frictionless — you're standing in a cafe, phone
+        in one hand. But raw entries aren't the point; the value is in <strong>revisiting</strong>
+        them: what you rated highest, which brew method you keep coming back to, where you've been.
+      </p>
+      <p>
+        So it needed two things done well: a capture flow fast enough to actually use, and a set of
+        views that turn a pile of logs into something you'd want to browse.
+      </p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">02 — Approach</span></div>
+      <h2>One quick log, four ways to look back</h2>
+      <p>
+        A single validated form captures everything — cafe, coffee, brew method, ratings, flavor
+        notes, price, photo, and optional location — and the rest of the app is about retrieval:
+      </p>
+      <ul class="caps">
+        <li><b>Quick log</b><span class="how">form + photo + geo</span><span>React Hook Form + Zod validation, a Supabase Storage photo upload, and optional geolocation capture.</span></li>
+        <li><b>Feed &amp; detail</b><span class="how">journal</span><span>A journal-style feed of saved logs, each with its own detail page.</span></li>
+        <li><b>Stats</b><span class="how">patterns</span><span>Streaks, average rating, favorite brew method, and flavor patterns derived from the logs.</span></li>
+        <li><b>Map</b><span class="how">Leaflet pins</span><span>Saved cafes rendered as map pins — a geographic history of where you've had coffee.</span></li>
+      </ul>
+      <div class="note">
+        <span class="label">Design decision — mobile-first</span>
+        <p>Every screen is designed for a phone in one hand first, then scaled up — because that's where a cafe log actually gets written. Magic-link auth keeps sign-in to a single tap, and protected routes keep each journal private.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">03 — Architecture</span></div>
+      <h2>Next.js App Router over Supabase</h2>
+      <p>
+        The app pairs the Next.js App Router with Supabase for auth, database, and storage. Route
+        protection gates the journal behind a session; SWR keeps the feed and stats fresh; Leaflet
+        renders the map. It ships on Vercel.
+      </p>
+    </div>
+    <div class="arch">
+      <div class="flow">
+        <div class="node">
+          <div class="nt">Auth</div>
+          <div class="nb">Magic link</div>
+          <div class="nd">Supabase Auth · protected routes gate the journal</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Capture</div>
+          <div class="nb">Quick log</div>
+          <div class="nd">RHF + Zod validation · photo upload · geolocation</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Store</div>
+          <div class="nb">Supabase</div>
+          <div class="nd">Postgres rows + Storage for photos</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Revisit</div>
+          <div class="nb">Feed · stats · map</div>
+          <div class="nd">SWR reads · derived stats · Leaflet pins</div>
+        </div>
+      </div>
+      <div class="loop"><b>route protection</b> — every journal view runs behind an authenticated session, so one user's logs stay theirs.</div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">04 — What it demonstrates</span></div>
+      <h2>The full surface of a real app</h2>
+      <p>
+        Brew Notes is deliberately end-to-end: authentication, form validation, file uploads,
+        geolocation, database reads and writes, route protection, and a responsive UI — the full
+        workflow of shipping a product, not a single feature in isolation.
+      </p>
+      <div class="facts">
+        <div class="fact"><b>4</b><span>ways to revisit — feed, detail, stats, map</span></div>
+        <div class="fact"><b>3</b><span>Supabase surfaces — Auth, Database, Storage</span></div>
+        <div class="fact"><b>1</b><span>quick log form driving all of it</span></div>
+      </div>
+      <div class="stack">
+        <span>Next.js 14</span><span>TypeScript</span><span>Tailwind CSS</span><span>Supabase</span><span>React Hook Form</span><span>Zod</span><span>Leaflet</span><span>SWR</span><span>Framer Motion</span><span>Vercel</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <p class="big">Want a full-stack app shipped end to end, not just a prototype?</p>
+      <a class="mail" href="mailto:ghoziazmi@gmail.com">ghoziazmi@gmail.com</a>
+    </div>
+    <p class="fine">© 2026 Muhammad Azmi Ghozi Ramadhan · <a href="/" style="color:inherit">Back to portfolio</a></p>
+  </footer>
+
+</div>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+<script src="/assets/reveal.js" defer></script>
+</body>
+</html>

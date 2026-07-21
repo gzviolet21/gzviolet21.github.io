@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>Muhammad Azmi Ghozi Ramadhan — Software for operations</title>
 <meta name="description" content="I build software for the messy middle of operations — planning, assessment, and document-control systems that save hours, cut errors, and explain their own decisions. Jakarta, Indonesia.">
 <meta name="color-scheme" content="light dark">
@@ -10,11 +11,15 @@
 <meta property="og:description" content="Automation, internal tools, and operations analytics. Two live demos you can try.">
 <meta property="og:type" content="website">
 <style>
+  @font-face{
+    font-family:"Fraunces"; font-style:normal; font-weight:400 700; font-display:swap;
+    src:url("/assets/fonts/fraunces-latin.woff2") format("woff2");
+  }
   :root{
     --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
     --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
     --surface:#F4F5F7; --frame:#DCE0E6;
-    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",ui-serif,serif;
+    --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,ui-serif,serif;
     --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
   }
@@ -118,6 +123,16 @@
   .row .rd{grid-column:1/-1; color:var(--ink-2); margin-top:10px; max-width:64ch; font-size:15px}
   .row .rl{font-family:var(--mono); font-size:12.5px; color:var(--accent); text-decoration:none; white-space:nowrap; align-self:start}
   .row .rl:hover{text-decoration:underline}
+  .rlinks{display:grid; gap:9px; justify-items:end; text-align:right; align-self:start}
+  .rl.muted{color:var(--ink-3)}
+  .rl.muted:hover{text-decoration:none}
+  @media (max-width:560px){.rlinks{justify-items:start; text-align:left}}
+
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1; transform:none; transition:none}}
+  .frame{transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s}
+  .flagship:hover .frame{transform:translateY(-4px); box-shadow:0 1px 0 var(--line), 0 34px 62px -30px rgba(15,20,35,.45)}
 
   .caps{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden}
   @media (max-width:680px){.caps{grid-template-columns:1fr}}
@@ -194,20 +209,7 @@
       <span class="label">2 live demos · try them</span>
     </div>
 
-    <!-- HIDDEN TEMPORARILY: Competency Assessment (Erajaya). To restore, delete this comment opener and its matching closer below.
-    <div class="index" style="margin-bottom:44px">
-      <div class="row">
-        <div>
-          <div class="rt">Competency Assessment Platform</div>
-          <div class="rm">Client work · Erajaya Group · 400+ job roles · in production</div>
-          <p class="rd">Full-stack platform where managers assess employees against role-specific behaviors, with adaptive scoring, an HR dashboard, and one-click Excel reporting. Server-side score derivation, 404 roles / 203 competencies imported from Excel, deployed on Cloudflare Workers + Supabase.</p>
-        </div>
-        <span class="rl">In production</span>
-      </div>
-    </div>
-    END HIDDEN -->
-
-    <div class="flagship">
+    <div class="flagship reveal">
       <div>
         <div class="pj-title">CaseForge <span class="badge">Live demo</span></div>
         <div class="pj-meta">Case-interview assessment · recruitment screening · original product</div>
@@ -233,7 +235,7 @@
       </figure>
     </div>
 
-    <div class="flagship rev">
+    <div class="flagship rev reveal">
       <div>
         <div class="pj-title">Auto Planning &amp; Document Management <span class="badge">Live demo</span></div>
         <div class="pj-meta">Internal tooling · multinational manufacturing (NDA)</div>
@@ -259,29 +261,46 @@
       </figure>
     </div>
 
-    <div class="index" style="margin-top:clamp(48px,7vw,84px)">
+    <div class="index reveal" style="margin-top:clamp(48px,7vw,84px)">
+      <div class="row">
+        <div>
+          <div class="rt">Competency Assessment Platform</div>
+          <div class="rm">Client work · Erajaya Group · 404 roles · in production</div>
+          <p class="rd">Full-stack platform where managers assess employees against role-specific behaviors, with adaptive scoring, a server-side trust boundary, an HR dashboard, and one-click Excel reporting.</p>
+        </div>
+        <div class="rlinks">
+          <a class="rl" href="projects/competency/">Case study →</a>
+          <span class="rl muted">In production</span>
+        </div>
+      </div>
       <div class="row">
         <div>
           <div class="rt">Alumni LinkedIn Sync</div>
           <div class="rm">Open source · Python automation</div>
           <p class="rd">Maintains an alumni database by scoring likely LinkedIn matches and updating Google Sheets, with dry runs, confidence thresholds, and human review gates so automation stays conservative.</p>
         </div>
-        <a class="rl" href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">GitHub ↗</a>
+        <div class="rlinks">
+          <a class="rl" href="projects/alumni/">Case study →</a>
+          <a class="rl" href="https://github.com/gzviolet21/alumni-linkedin-sync" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
       </div>
       <div class="row">
         <div>
-          <div class="rt">Coffee Track VI</div>
+          <div class="rt">Brew Notes <span class="rm" style="margin:0">(Coffee Track VI)</span></div>
           <div class="rm">Open source · mobile-first web app</div>
           <p class="rd">A coffee journal built end-to-end — Supabase auth, photo logs, personal stats, and map-based cafe history.</p>
         </div>
-        <a class="rl" href="https://github.com/gzviolet21/coffee-track-vi" target="_blank" rel="noopener">GitHub ↗</a>
+        <div class="rlinks">
+          <a class="rl" href="projects/coffee-track/">Case study →</a>
+          <a class="rl" href="https://github.com/gzviolet21/coffee-track-vi" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
       </div>
     </div>
   </section>
 
   <div class="rule"></div>
 
-  <section id="build">
+  <section id="build" class="reveal">
     <div class="sec-head"><h2>What I build</h2><span class="label">Capabilities</span></div>
     <div class="caps">
       <div class="cap"><b>Internal web tools</b><p>Assessment platforms, dashboards, approval flows — from spreadsheet chaos to a real app your team logs into.</p></div>
@@ -304,5 +323,7 @@
   </footer>
 
 </div>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+<script src="/assets/reveal.js" defer></script>
 </body>
 </html>
