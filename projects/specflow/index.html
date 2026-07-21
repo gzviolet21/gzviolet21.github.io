@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpecFlow — Case study · Muhammad Azmi Ghozi Ramadhan</title>
+<meta name="description" content="How SpecFlow works: digitizing a hand-carried Production↔QA document flow into a shared system with automatic cross-team notifications and a clear status model.">
+<meta name="color-scheme" content="light dark">
+<style>
+  :root{
+    --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
+    --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
+    --surface:#F4F5F7; --frame:#DCE0E6;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",ui-serif,serif;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0F1216; --ink:#EDEFF2; --ink-2:#A9B0BC; --ink-3:#6D7482;
+      --line:#262B33; --accent:#8CA0E8; --accent-soft:rgba(140,160,232,.12);
+      --surface:#161A20; --frame:#20252D;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#E8EAED; --ink:#12151B; --ink-2:#454C59; --ink-3:#7C8494;
+    --line:#CFD3DA; --accent:#26408C; --accent-soft:rgba(38,64,140,.08);
+    --surface:#F4F5F7; --frame:#DCE0E6;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0F1216; --ink:#EDEFF2; --ink-2:#A9B0BC; --ink-3:#6D7482;
+    --line:#262B33; --accent:#8CA0E8; --accent-soft:rgba(140,160,232,.12);
+    --surface:#161A20; --frame:#20252D;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 clamp(20px,5vw,56px)}
+  .col{max-width:680px}
+
+  .kicker{font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:500}
+  .label{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3)}
+
+  .rule{position:relative; height:1px; background:var(--line)}
+  .rule::before,.rule::after{content:""; position:absolute; top:-4px; width:1px; height:9px; background:var(--line)}
+  .rule::before{left:0} .rule::after{right:0}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-family:var(--mono); font-size:12.5px}
+  .topnav a{color:var(--ink-2); text-decoration:none}
+  .topnav a:hover{color:var(--accent)}
+  .topnav .back::before{content:"← "; color:var(--accent)}
+
+  header.h{padding:clamp(40px,7vw,72px) 0 36px}
+  h1{font-family:var(--serif); font-weight:600; font-size:clamp(40px,8vw,74px); line-height:.98; letter-spacing:-.02em; margin:18px 0 0}
+  .dek{font-size:clamp(17px,2.2vw,20px); color:var(--ink-2); max-width:56ch; margin-top:22px}
+  .metaline{display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:26px; font-family:var(--mono); font-size:12px; color:var(--ink-3)}
+  .metaline b{color:var(--ink-2); font-weight:500}
+  .cta{margin-top:30px; display:flex; flex-wrap:wrap; gap:10px}
+  .cta a{font-family:var(--mono); font-size:13px; text-decoration:none; padding:10px 16px; border:1px solid var(--line); border-radius:2px; color:var(--ink); transition:.16s}
+  .cta a:hover{border-color:var(--accent); color:var(--accent)}
+  .cta a.key{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+  .cta a.key:hover{background:var(--accent); border-color:var(--accent); color:#fff}
+
+  .frame{background:var(--surface); border:1px solid var(--frame); border-radius:5px; padding:10px; box-shadow:0 1px 0 var(--line), 0 30px 60px -34px rgba(15,20,35,.4); margin:clamp(28px,5vw,48px) 0}
+  .frame .bar{display:flex; gap:6px; padding:4px 6px 10px}
+  .frame .bar i{width:8px; height:8px; border-radius:50%; background:var(--line)}
+  .frame img{display:block; width:100%; height:auto; border-radius:3px; border:1px solid var(--frame)}
+  .frame figcaption{font-family:var(--mono); font-size:11px; color:var(--ink-3); padding:11px 4px 2px; letter-spacing:.02em}
+
+  section{padding:clamp(30px,5vw,52px) 0}
+  .eyebrow-row{display:flex; align-items:baseline; gap:14px; margin-bottom:20px}
+  h2{font-family:var(--serif); font-weight:600; font-size:clamp(23px,3.4vw,32px); letter-spacing:-.01em}
+  section p{color:var(--ink-2); font-size:16.5px; margin-top:16px}
+  section p:first-of-type{margin-top:0}
+  .col strong{color:var(--ink); font-weight:600}
+
+  .caps{list-style:none; margin:26px 0 0; display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden}
+  .caps li{background:var(--paper); padding:16px 18px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 16px; align-items:baseline}
+  .caps li b{font-family:var(--mono); font-size:13px; color:var(--ink)}
+  .caps li .how{font-family:var(--mono); font-size:11.5px; color:var(--accent); letter-spacing:.02em; text-align:right}
+  .caps li span{grid-column:1/-1; font-size:14px; color:var(--ink-2)}
+  @media (max-width:560px){.caps li .how{text-align:left}}
+
+  .arch{margin:30px 0 6px; border:1px solid var(--line); border-radius:6px; background:var(--surface); padding:clamp(20px,4vw,34px); overflow-x:auto}
+  .flow{display:flex; align-items:stretch; gap:0; min-width:640px}
+  .node{flex:1; background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:16px 15px}
+  .node .nt{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent)}
+  .node .nb{font-size:14px; color:var(--ink); margin-top:8px; font-weight:600; font-family:var(--serif)}
+  .node .nd{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:7px; line-height:1.5}
+  .arrow{flex:0 0 34px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:18px}
+  .loop{margin-top:14px; font-family:var(--mono); font-size:11.5px; color:var(--ink-3); display:flex; align-items:center; gap:8px}
+  .loop b{color:var(--accent); font-weight:500}
+
+  .note{margin:26px 0 0; border-left:2px solid var(--accent); padding:4px 0 4px 20px}
+  .note p{font-size:15px; color:var(--ink-2); margin:0}
+  .note .label{display:block; margin-bottom:6px}
+
+  .facts{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-top:24px}
+  @media (max-width:620px){.facts{grid-template-columns:1fr}}
+  .fact{background:var(--paper); padding:20px}
+  .fact b{font-family:var(--serif); font-size:26px; font-weight:600; letter-spacing:-.01em; font-variant-numeric:tabular-nums}
+  .fact span{display:block; font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:6px; letter-spacing:.03em; line-height:1.5}
+
+  footer{padding:56px 0 80px; border-top:1px solid var(--line); margin-top:clamp(30px,6vw,60px)}
+  .foot-grid{display:flex; flex-wrap:wrap; justify-content:space-between; gap:20px; align-items:end}
+  footer .big{font-family:var(--serif); font-weight:600; font-size:clamp(22px,3.4vw,30px); letter-spacing:-.01em; max-width:22ch}
+  footer a.mail{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent)}
+  .fine{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.04em; margin-top:36px}
+  a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav">
+    <a class="back" href="/">Portfolio</a>
+    <a href="https://gzviolet21.github.io/specflow-demo/" target="_blank" rel="noopener">Live demo ↗</a>
+  </nav>
+
+  <header class="h">
+    <p class="kicker">Case study · Internal tooling (NDA)</p>
+    <h1>SpecFlow</h1>
+    <p class="dek">
+      A document-control system that replaced a hand-carried paper flow between Production and QA
+      with a shared digital one — where a new product spec notifies QA automatically, and a
+      verdict routes straight back to the team that submitted it.
+    </p>
+    <div class="metaline">
+      <span>Role <b>Design &amp; build (solo)</b></span>
+      <span>Type <b>Cross-team document control</b></span>
+      <span>Stack <b>Vanilla JS · client-side</b></span>
+      <span>Context <b>Manufacturing · original under NDA</b></span>
+    </div>
+    <div class="cta">
+      <a class="key" href="https://gzviolet21.github.io/specflow-demo/" target="_blank" rel="noopener">Open the live demo ↗</a>
+      <a href="/">← Back to portfolio</a>
+    </div>
+  </header>
+
+  <figure class="frame">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <img src="/assets/specflow.jpg" width="1100" height="752" alt="SpecFlow Production view listing submitted specs with status pills and a submit button" />
+    <figcaption>Production side — every submitted spec, its revision, and where it stands with QA</figcaption>
+  </figure>
+
+  <div class="rule"></div>
+
+  <section>
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">01 — Problem</span></div>
+      <h2>Specs were walked across the floor on paper</h2>
+      <p>
+        On the original line, Production wrote a product's actual spec values on a form and
+        physically carried it to QA. QA reviewed it, and if something was off, the paper made its
+        way back with hand-written notes. Nobody could see what was in the queue, revisions got
+        lost, and a spec could sit on a desk for hours before anyone noticed.
+      </p>
+      <p>
+        The result was slow QC passes and no shared record. The goal: move the whole exchange into
+        one screen both teams trust — so a spec is <strong>never in a drawer</strong>, and both
+        sides always know exactly what is waiting on whom.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">02 — Approach</span></div>
+      <h2>One shared queue, driven by notifications</h2>
+      <p>
+        Production submits a spec — product, batch, line, and the actual measured values. The
+        moment it lands, QA is notified; when QA rules on it, the verdict and notes route straight
+        back to the submitter. Every document carries one of three states that both teams read at
+        a glance:
+      </p>
+      <ul class="caps">
+        <li><b>In review</b><span class="how">awaiting QA</span><span>Submitted by Production and sitting in QA's incoming queue.</span></li>
+        <li><b>Approved</b><span class="how">QC pass</span><span>QA confirmed the spec — cleared, with a record of who and when.</span></li>
+        <li><b>Needs revision</b><span class="how">back to Production</span><span>Rejected with feedback; Production revises and resubmits as a new revision, which re-notifies QA.</span></li>
+      </ul>
+      <div class="note">
+        <span class="label">Design decision</span>
+        <p>The status lives on the <strong>document, not in someone's inbox</strong>. Because both roles read the same queue, "where is that spec?" stops being a question you have to ask a person.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">03 — Architecture</span></div>
+      <h2>A two-role state machine with automatic hand-offs</h2>
+      <p>
+        SpecFlow is a role-switching single-page app. A submission moves a document through a small
+        state machine, and each transition fires the notification for the <strong>other</strong>
+        team. State persists in the browser, so the demo needs no backend and anyone can experience
+        both sides from one link.
+      </p>
+    </div>
+    <div class="arch">
+      <div class="flow">
+        <div class="node">
+          <div class="nt">Production</div>
+          <div class="nb">Submit spec</div>
+          <div class="nd">Product · batch · line · actual values → status: In review</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">System</div>
+          <div class="nb">Auto-notify</div>
+          <div class="nd">QA alerted the moment a spec lands — no hand-off, no waiting</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">QA</div>
+          <div class="nb">Review queue</div>
+          <div class="nd">Approve, or request revision with notes</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <div class="nt">Production</div>
+          <div class="nb">Verdict &amp; feedback</div>
+          <div class="nd">Result routes back to the submitter automatically</div>
+        </div>
+      </div>
+      <div class="loop"><b>↺ revision loop</b> — a rejection sends the spec back to Production, which revises and resubmits as a new revision, re-notifying QA until it passes.</div>
+    </div>
+  </section>
+
+  <figure class="frame">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <img src="/assets/specflow-qa.jpg" width="1100" height="789" loading="lazy" alt="SpecFlow QA queue with the notifications panel open showing automatic new-spec alerts" />
+    <figcaption>QA side — the incoming queue, with automatic "new spec submitted" notifications open</figcaption>
+  </figure>
+
+  <section>
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">04 — The other side</span></div>
+      <h2>Both teams see the same truth</h2>
+      <p>
+        Flip the role switch and the same data reframes: Production sees <strong>what it
+        submitted</strong> and how QA responded; QA sees <strong>what is incoming</strong> and acts
+        on it. Counters at the top — awaiting review, approved, needs revision — give each side its
+        workload at a glance, and the notification bell means neither team has to go looking.
+      </p>
+      <p>
+        That shared visibility is the whole point: it collapses the round-trip that used to happen
+        on paper into a loop that everyone can watch in real time, so QC passes land faster.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <div class="eyebrow-row"><span class="label">05 — What it demonstrates</span></div>
+      <h2>Workflow design between two real teams</h2>
+      <p>
+        SpecFlow shows the part of software that isn't about a single user: modelling a hand-off
+        between two roles with conflicting views, encoding it as a status a machine can enforce, and
+        wiring the notifications that make a collaborative process actually flow — shipped as a fast,
+        dependency-free app you can try from either seat.
+      </p>
+      <div class="facts">
+        <div class="fact"><b>2</b><span>roles — Production &amp; QA, one shared queue</span></div>
+        <div class="fact"><b>3</b><span>document states with automatic transitions</span></div>
+        <div class="fact"><b>0</b><span>backend — runs client-side, free to host</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <p class="big">Have a paper hand-off between two teams that should be one screen?</p>
+      <a class="mail" href="mailto:ghoziazmi@gmail.com">ghoziazmi@gmail.com</a>
+    </div>
+    <p class="fine">© 2026 Muhammad Azmi Ghozi Ramadhan · <a href="/" style="color:inherit">Back to portfolio</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
