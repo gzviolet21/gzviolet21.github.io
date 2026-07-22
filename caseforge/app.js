@@ -438,6 +438,11 @@ function recruiterView(selectedId = null, filter = "all") {
   if (progress) progress.onclick = () => { saveReviewStatus(selected.id, "Recommended"); recruiterView(selected.id, filter); };
   const note = document.querySelector(".review-note");
   if (note) note.onclick = () => { note.textContent = "Reviewer note recorded"; note.disabled = true; };
+  const roleSlot = document.querySelector(".practice-label");
+  if (roleSlot) {
+    roleSlot.innerHTML = `<span class="role-toggle"><button id="toggleCandidate">Candidate practice</button><button class="active" id="toggleRecruiter">Recruiter view</button></span>`;
+    document.querySelector("#toggleCandidate").onclick = welcome;
+  }
 }
 
 function recruiterDetail(candidate) {
@@ -725,6 +730,11 @@ function welcome() {
     document.querySelector(".welcome-copy").insertAdjacentHTML("beforeend", `<div class="resume-card"><b>Assessment in progress</b><span>Your previous ${saved.mode} attempt is saved on this browser.</span><button id="resumeAttempt">Resume →</button><button id="discardAttempt">Discard</button></div>`);
     document.querySelector("#resumeAttempt").onclick = () => restoreAttempt(saved);
     document.querySelector("#discardAttempt").onclick = () => { clearActiveAttempt(); welcome(); };
+  }
+  const roleSlot = document.querySelector(".practice-label");
+  if (roleSlot) {
+    roleSlot.innerHTML = `<span class="role-toggle"><button class="active" id="toggleCandidate">Candidate practice</button><button id="toggleRecruiter">Recruiter view</button></span>`;
+    document.querySelector("#toggleRecruiter").onclick = () => recruiterView();
   }
 }
 
@@ -1211,4 +1221,8 @@ function explain(id) {
 }
 
 validateCaseLibrary();
-welcome();
+if (new URLSearchParams(location.search).get("view") === "recruiter") {
+  recruiterView();
+} else {
+  welcome();
+}
